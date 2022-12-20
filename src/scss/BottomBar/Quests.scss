@@ -1,0 +1,178 @@
+@import '../config';
+
+section.display.quests {
+    padding: 2em;
+    width: 100%;
+    @include Flex(sb);
+
+    section.quest-section {
+        width: 48%;
+
+        p.header {
+            font-weight: 800;
+            margin-bottom: 1.5em;
+            border-bottom: 2px solid #505050;
+            padding-bottom: .25em;
+        }
+
+        section.active-quest {
+            article.active {
+                section {
+                    &.rewards {
+                        margin-top: 2em;
+    
+                        p.rewards {
+                            text-transform: uppercase;
+                            font-size: .85rem;
+                            font-weight: 800;
+                            margin-bottom: .25em;
+                        }
+    
+                        section {
+                            @include Flex(none, c);
+    
+                            div {
+                                @include Flex(none, c);
+                                font-size: .9rem;
+                                font-weight: 500;
+                                color: $clr-grey;
+                                margin-right: 1em;
+    
+                                span {
+                                    @include Rectangle(25px);
+                                    margin-right: .5em;
+    
+                                    &.gold { color: gold; }
+                                    &.exp { color: rgb(104, 157, 255); }
+    
+                                    svg { @include FullSize; }
+                                }
+                            }
+                        }
+                    }
+    
+                    &.description {
+                        p {
+                            &.quest-header {
+                                font-weight: 700;
+                                font-size: 1.25rem;
+                                letter-spacing: -1px;
+                                font-family: 'Comfortaa', cursive;
+                                margin-bottom: .25em;
+                            }
+        
+                            &.desc {
+                                color: $clr-grey;
+                                font-size: .9rem;
+                            }
+                        }
+                    }
+                }
+    
+                button {
+                    padding: .75em 2em;
+                    border-radius: .25em;
+                    outline: 0;
+                    border: 0;
+                    margin-top: 2em;
+                    transition: .3s;
+                    cursor: pointer;
+    
+                    label {
+                        color: $clr-white;
+                        font-weight: 500;
+                    }
+    
+                    &.cancel {
+                        background: $clr-red;
+    
+                        &:hover {
+                            background: red;
+                        }
+                    }
+                }
+            }
+        }
+
+        section.all-quests {
+            article.available {
+                background: #222222;
+                padding: .5em;
+                border-radius: .2em;
+                margin-bottom: .5em;
+
+                p.available-header {
+                    font-weight: 700;
+                    font-size: .9rem;
+                    letter-spacing: -1px;
+                    font-family: 'Comfortaa', cursive;
+                }
+
+                section.options {
+                    button {
+                        cursor: pointer;
+                        transition: .3s;
+                        outline: 0;
+                        border: 0;
+                        cursor: pointer;
+                        border-radius: .25em;
+
+                        label {
+                            display: block;
+                            padding: .5em 1.5em;
+                            font-size: .8rem;
+                            font-weight: 400;
+                            color: $clr-white;
+                        }
+
+                        &.trash {
+                            margin-left: .5em;
+                            background: $clr-red;
+
+                            &:hover { background: red; }
+                        }
+
+                        &.accept {
+                            background: $clr-blued;
+
+                            &:hover { background: royalblue; }
+                        }
+                    }
+                }
+
+                section.rewards {
+                    margin: 1em 0;
+
+                    p.rewards {
+                        text-transform: uppercase;
+                        font-size: .7rem;
+                        font-weight: 800;
+                        margin: 1em 0 .5em 0;
+                    }
+
+                    section {
+                        @include Flex(none, c);
+
+                        div {
+                            @include Flex(none, c);
+                            font-size: .8rem;
+                            font-weight: 500;
+                            color: $clr-grey;
+                            margin-right: 2em;
+
+                            span {
+                                @include Rectangle(25px);
+                                margin-right: .5em;
+
+                                &.gold { color: gold; }
+                                &.exp { color: rgb(104, 157, 255); }
+
+                                svg { @include FullSize; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

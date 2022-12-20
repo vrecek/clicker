@@ -1,0 +1,43 @@
+@import '../config';
+
+section.display.informations {
+    width: 100%;
+    @include Flex(sa);
+    padding: 3em 1em;
+
+    div.information {
+        @include Flex(none, c, c);
+        flex-grow: 1;
+        padding: 0 1em;
+
+        p.header {
+            margin-bottom: 2em;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        ul {
+            list-style: none;
+
+            li {
+                margin-bottom: 1em;
+
+                p {
+                    font-size: .9rem;
+
+                    &.what {
+                        font-family: 'Comfortaa', cursive;
+                        font-weight: 700;
+                        color: $clr-grey;
+
+                    }
+        
+                    &.value {
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+}

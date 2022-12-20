@@ -1,0 +1,58 @@
+@import '../config';
+
+section.bottom-bar {
+    background: #282828;
+    color: $clr-white;
+    @include Flex(none, c);
+    transition: .5s;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    span.toggle-bottom-bar,
+    section.display-toggle span {
+        @include Rectangle(40px);
+        background: #303030;
+        border-radius: .2em;
+        @include Flex(c, c);
+        cursor: pointer;
+        transition: .5s;
+
+        svg {
+            @include FullSize(70%)
+        }
+    }
+
+    section.display-toggle,
+    span.toggle-bottom-bar {
+        position: absolute;
+        top: 0;
+        translate: 0 -50%;
+    }
+
+    section.display-toggle {
+        right: .5em;
+        display: flex;
+        transition: .5s;
+
+        span {
+            margin-left: .5em;
+
+            &.active {
+                pointer-events: none;
+                background: $clr-blued;
+            }
+        }
+    }
+
+    section.display {
+        max-height: 95vh;
+        overflow-y: scroll;
+    }
+
+    span.toggle-bottom-bar {
+        border: 1px solid saddlebrown;
+        left: .5em;
+    }
+}

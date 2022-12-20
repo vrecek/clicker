@@ -1,0 +1,17 @@
+@import '../config';
+
+section.display.skills {
+    height: 13vh;
+    @include Flex(none, c);
+    padding: 20px calc(.5em + 45px);
+    
+    figure {
+        height: 100%;
+        cursor: pointer;
+
+        img {
+            @include FullSize;
+            object-fit: cover;
+        }
+    }
+}
