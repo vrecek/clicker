@@ -1,4 +1,4 @@
-import { Aliases } from "../functions/Client";
+import { Aliases } from "../util/Client";
 
 export type StateUpdate = React.Dispatch<React.SetStateAction<boolean>>
 

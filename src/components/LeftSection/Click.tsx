@@ -1,9 +1,9 @@
 import React from 'react'
 import FigureImage from '../Common/Image'
 import sword from '../../images/sword.png'
-import Game from '../../functions/Game'
+import Game from '../../util/Game'
 import { GameContext, PlayerContext } from '../ContainerWrap'
-import Player from '../../functions/Player'
+import Player from '../../util/Player'
 
 const Click = () => {
     const GAME: Game = React.useContext(GameContext),

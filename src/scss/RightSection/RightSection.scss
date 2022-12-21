@@ -45,7 +45,7 @@ section.right-section {
                 @include Flex(sb);
                 margin-top: 1.25em;
 
-                div {
+                div.left {
                     @include Flex(sb, sb, c);
                     flex-grow: 1;
 

@@ -1,4 +1,5 @@
 import { StateUpdate } from "../interfaces/CommonInterfaces"
+import Game from "./Game"
 
 export default class Player {
     private gold: number
@@ -36,12 +37,14 @@ export default class Player {
 
 
 
+    // Calculate if critical hit would happen
     public isCritical(): boolean {
         if(this.critChance === 0) return false
 
         return ~~(Math.random() * 100) + 1 <= this.critChance
     }
 
+    // Calculate critical damage
     public calculateCriticalDamage(): number {
         return parseFloat(
             (this.clickPower * this.critPower).toFixed(2)
@@ -49,7 +52,7 @@ export default class Player {
     }
 
 
-
+    // Start Damage Per Second interval
     public initializeDPS(): void {
         setInterval(() => {
             this.gold += this.getDps
@@ -59,19 +62,25 @@ export default class Player {
     }
 
 
-
+    // Add to current player's gold
     public updateGold(money: number): void {
-        this.gold += money
+        this.gold += Game.fixedValue(money)
     }
+
+    // Add to current player's click power
+    public updateClickPower(value: number): void {
+        this.clickPower += Game.fixedValue(value)
+    }
+
 
     public updateState(): void {
         this.update(curr => !curr)
     }
 
-
+    
 
     public get getClickPower(): number {
-        return this.clickPower
+        return Game.fixedValue(this.clickPower)
     }
 
     public get getLevel(): number {
@@ -79,10 +88,10 @@ export default class Player {
     }
 
     public get getDps(): number {
-        return this.dps
+        return Game.fixedValue(this.dps)
     }
 
     public get getGold(): number {
-        return this.gold
+        return Game.fixedValue(this.gold)
     }
 }

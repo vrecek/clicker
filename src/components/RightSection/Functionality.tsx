@@ -1,21 +1,24 @@
 import React from 'react'
 import { AiFillGold } from 'react-icons/ai'
+import { UpgradeFunctionality } from '../../interfaces/RightInterfaces'
 import Button from '../Common/Button'
 
-const Functionality = () => {
-    const iconBuy: JSX.Element = <>999 <AiFillGold /></>
+const Functionality = ({cost, owned, what, buyFunc}: UpgradeFunctionality) => {
+    const iconBuy: JSX.Element = <>{cost} <AiFillGold /></>
+
 
     return (
         <section className="functionality">
 
-            <div>
+            <div className='left'>
 
-                <p className="what">Increases <span>click power</span> by <span>5</span></p>
-                <p className="quantity">x999</p>
+                <p dangerouslySetInnerHTML={{__html: what}} className="what"></p>
+                
+                <p className="quantity">x{owned}</p>
 
             </div>
 
-            <Button text='Buy' additional={iconBuy} />
+            <Button action={buyFunc} text='Buy' additional={iconBuy} />
 
         </section>
     )

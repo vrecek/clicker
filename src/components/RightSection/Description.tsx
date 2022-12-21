@@ -1,11 +1,12 @@
 import React from 'react'
+import { UpgradeDescription } from '../../interfaces/RightInterfaces'
 
-const Description = () => {
+const Description = ({desc, header}: UpgradeDescription) => {
     return (
         <section className="description">
 
-            <p className="header">Loremipsumdol</p>
-            <p className="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam.</p>
+            <p className="header">{header}</p>
+            <p className="text">{desc}</p>
 
         </section>
     )

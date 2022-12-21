@@ -1,5 +1,5 @@
 import React from 'react'
-import { Aliases } from '../../functions/Client'
+import { Aliases } from '../../util/Client'
 
 type IconOptions = Aliases.Text<JSX.Element> & {
     cname?: string,
