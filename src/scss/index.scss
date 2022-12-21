@@ -16,19 +16,13 @@
     font-size: 22px;
 }
 
-div#root,
-div.App {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
 body {
-    width: 100vw;
     font-family: 'Inter', sans-serif;
     background-image: url('../images/background.jpg');
+    overflow: hidden;
     background-size: cover;
     background-attachment: fixed;
+    width: 100vw;
     height: 100vh;
 
     main.main-container-wrap {

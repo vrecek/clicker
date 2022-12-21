@@ -1,5 +1,70 @@
 @import '../config';
 
 section.left-section {
-    background: green;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    section.clickable {
+        @include Flex(c, c);
+        flex-grow: 1;
+        cursor: pointer;
+        transition: .1s;
+        
+        div.image {
+            figure {
+                @include Flex(c, c);
+    
+                img {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    section.progress {
+        div {
+            padding: .5em;
+            color: $clr-white;
+            @include Flex(none, c);
+            background: #303030;
+
+            span {
+                @include Rectangle(40px);
+                margin-right: 1em;
+
+                svg { @include FullSize; }
+            }
+
+            p {
+                flex-grow: 1;
+                text-align: center;
+            }
+
+            &.gold {
+                p {
+                    color: gold;
+                    font-weight: 700;
+                    font-family: 'Comfortaa', cursive;
+                }
+            }
+
+            &.exp {
+                position: relative;
+
+                p,
+                span { @include Layer(3); }
+
+                span.fill {
+                    position: absolute;
+                    z-index: 2;
+                    left: 0;
+                    top: 0;
+                    background: $clr-blued;
+                    width: 20%;
+                    height: 100%;
+                }
+            }
+        }
+    }
 }

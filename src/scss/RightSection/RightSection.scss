@@ -1,4 +1,108 @@
 @import '../config';
 
 section.right-section {
+    overflow-y: scroll;
+
+    article.upgrade {
+        @include Flex(sb);
+        margin-bottom: 2em;
+
+        figure {
+            width: 15%;
+            aspect-ratio: 1;
+            height: max-content;
+
+            img {
+                @include FullSize;
+                object-fit: cover;
+            }
+        }
+
+        section.right {
+            flex-grow: 1;
+            padding: .5em;
+            background: rgba(30, 30, 30, .9);
+            border-radius: 0 .25em .25em 0;
+            @include Flex(sb, none, c);
+
+            section.description {
+                p {
+                    &.header {
+                        color: $clr-white;
+                        font-weight: 700;
+                        font-family: 'Comfortaa', cursive;
+                        margin-bottom: .25em;
+                    }
+
+                    &.text {
+                        font-size: .8rem;
+                        color: $clr-grey;
+                    }
+                }
+            }
+
+            section.functionality {
+                @include Flex(sb);
+                margin-top: 1.25em;
+
+                div {
+                    @include Flex(sb, sb, c);
+                    flex-grow: 1;
+
+                    p {
+                        &.what {
+                            font-size: .85rem;
+                            font-family: 'Comfortaa', cursive;
+                            color: $clr-white;
+                            padding-right: 2em;
+        
+                            span {
+                                font-size: inherit;
+                                color: $clr-orange;
+                            }
+                        }
+
+                        &.quantity {
+                            font-size: .75rem;
+                            color: $clr-grey;
+                        }
+                    }
+                }
+
+                button {
+                    @include Flex(sb, c, c);
+                    padding: .25em 2em;
+                    outline: 0;
+                    border: 2px solid $clr-orange;
+                    border-radius: .25em;
+                    background: rgba(255, 68, 0, 0.589);
+                    cursor: pointer;
+                    transition: .3s;
+
+                    label {
+                        color: $clr-white;
+                        text-transform: uppercase;
+                        font-family: 'Comfortaa', cursive;
+                        font-weight: 700;
+                        font-size: .8rem;
+                        margin-bottom: .2em;
+                    }
+
+                    span {
+                        @include Flex(none, c);
+                        color: $clr-white;
+
+                        svg {
+                            @include Rectangle(20px);
+                        }
+                    }
+
+                    &:hover {
+                        border-color: transparent;
+                        box-shadow: 0 0 5px orange;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -16,8 +16,35 @@ section.display.quests {
         }
 
         section.active-quest {
+            position: sticky;
+            top: 0;
+
             article.active {
                 section {
+                   &.quest-progress {
+                        margin-top: 2em;
+            
+                        div {
+                            margin-top: 1em;
+                            background: #202020;
+                            padding: .4em;
+                            text-align: center;
+                            font-size: .7rem;
+                        }
+            
+                        p.mission {
+                            color: $clr-grey;
+                            font-size: .9rem;
+                        }
+            
+                        p.progress {
+                            text-transform: uppercase;
+                            font-size: .85rem;
+                            font-weight: 800;
+                            margin-bottom: .25em;
+                        }
+                    }
+
                     &.rewards {
                         margin-top: 2em;
     
@@ -101,6 +128,12 @@ section.display.quests {
                 border-radius: .2em;
                 margin-bottom: .5em;
 
+                p.mission {
+                    margin-top: 1em;
+                    font-size: .8rem;
+                    color: $clr-grey;
+                }
+
                 p.available-header {
                     font-weight: 700;
                     font-size: .9rem;
@@ -145,7 +178,7 @@ section.display.quests {
 
                     p.rewards {
                         text-transform: uppercase;
-                        font-size: .7rem;
+                        font-size: .8rem;
                         font-weight: 800;
                         margin: 1em 0 .5em 0;
                     }

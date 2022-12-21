@@ -16,7 +16,7 @@ const FigureImage = ({cname, source, altTxt, action}: ImageOptions) => {
     return (
         <figure onClick={actionFunc} className={cname ?? ''}>
 
-            <img src={source} alt={altTxt ?? 'Image'} loading='lazy' />
+            <img draggable='false' src={source} alt={altTxt ?? 'Image'} loading='lazy' />
 
         </figure>
     )

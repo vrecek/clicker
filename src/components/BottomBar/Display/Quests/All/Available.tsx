@@ -7,6 +7,7 @@ const Available = () => {
         <article className="available">
 
             <p className="available-header">Lorem ipsum dolor</p>
+            <p className="mission">Collect 9 lorem</p>
             <Rewards />
             <Options />
 
