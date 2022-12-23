@@ -15,7 +15,7 @@ const Click = () => {
               isCritical: boolean = PLAYER.isCritical(),
               damage: number = isCritical 
                 ? PLAYER.calculateCriticalDamage() 
-                : PLAYER.getClickPower
+                : PLAYER.getInformation<number>('clickPower')
 
 
         GAME.animateImage(t.children[0] as HTMLElement, 100)
@@ -26,7 +26,8 @@ const Click = () => {
             1500
         )
 
-        PLAYER.updateGold(damage)
+        PLAYER.updateField('gold', damage)
+        PLAYER.updateField('exp', PLAYER.getInformation('clickPower'))
 
         GAME.updateState()
     }

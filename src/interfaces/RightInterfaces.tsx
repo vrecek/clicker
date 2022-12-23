@@ -1,5 +1,3 @@
-import { BuyAction } from "../util/Upgrade"
-
 export type UpgradeDescription = {
     header: string
     desc: string
@@ -7,7 +5,7 @@ export type UpgradeDescription = {
 
 export type UpgradeFunctionality = {
     owned: number
-    cost: number
+    cost: string
     what: string
     buyFunc: () => void
 }

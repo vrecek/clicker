@@ -4,7 +4,7 @@ import Icon from '../../Common/Icon'
 import { PlayerContext } from '../../ContainerWrap'
 
 const Gold = () => {
-    const currentGold: number = React.useContext(PlayerContext).getGold
+    const currentGold = React.useContext(PlayerContext).getInformation<string>('gold', true)
 
     return (
         <div className="gold">

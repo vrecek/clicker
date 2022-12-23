@@ -1,40 +1,34 @@
 import Player from "../Player";
 import Upgrade from "../Upgrade";
-
-const randomPower = (owned: number, clickPower: number): number => {
-    const div1: number = (owned + clickPower) / 1.25,
-          sqrt: number = Math.sqrt(owned + clickPower),
-          div2: number = Math.floor(owned / 5)
+import u1 from '../../images/upgrades/u1.jpg'
 
 
-    return (Math.ceil(div1) - clickPower) 
-                            + 1 
-                            - Math.floor(sqrt - 1) 
-                            + Math.floor(Math.random() * div2)
-}
+const buyFunction = (upg: Upgrade<number>, player: Player): void => {
+    player.updateField('clickPower', upg.getBuffer!)
 
-const buyFunction = (upg: Upgrade, player: Player): void => {
-    player.updateClickPower(upg.buffer ?? randomPower(upg.getOwned, player.getClickPower))
+    const newValue: number = ( Math.cbrt(upg.getOwned) * Math.sqrt(upg.getOwned) ) || 1 
 
-    upg.buffer = randomPower(upg.getOwned, player.getClickPower)
+    upg.setBuffer = newValue
 
-    upg.updateWhatValue(upg.buffer)
+    upg.setWhatValue = newValue
 }
 
 const costIncrementFunction = (owned: number, price: number): number => {
-    return (owned * price) / (Math.floor(Math.random() * owned) || 1) - Math.random() * price + price
+    return Math.sqrt(owned * price) 
+           + Math.sqrt( price / (owned || 1) )
 }
 
 
-const PrimaryWeapon: Upgrade = new Upgrade(
-    'https://wallpaperaccess.com/full/13189.jpg',
+const PrimaryWeapon: Upgrade<number> = new Upgrade<number>(
+    u1,
     'Primary weapon',
     'Your basic weapon to help you fight against monsters encountered in your journey',
     'Increases [[click power]] by {{}}',
     0,
-    10,
+    20,
     buyFunction,
     costIncrementFunction,
+    1,
     1
 )
 

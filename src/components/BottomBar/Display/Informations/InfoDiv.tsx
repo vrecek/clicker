@@ -1,33 +1,24 @@
 import React from 'react'
+import { BottomInformation } from '../../../../interfaces/BottomInterfaces'
 
-const InfoDiv = () => {
+const InfoDiv = ({header, list}: BottomInformation) => {
     return (
         <div className="information">
 
-            <p className="header">Progress</p>
+            <p className="header">{header}</p>
 
             <ul>
 
-                <li>
-                    <p className="what">Time played</p>
-                    <p className="value">1h 27m</p>
-                </li>
-                <li>
-                    <p className="what">Time played</p>
-                    <p className="value">1h 27m</p>
-                </li>
-                <li>
-                    <p className="what">Time played</p>
-                    <p className="value">1h 27m</p>
-                </li>
-                <li>
-                    <p className="what">Time played</p>
-                    <p className="value">1h 27m</p>
-                </li>
-                <li>
-                    <p className="what">Time played</p>
-                    <p className="value">1h 27m</p>
-                </li>
+                {
+                    list.map((x, i) => (
+                        <li key={i}>
+
+                            <p className="what">{x.what}</p>
+                            <p className="value">{x.value}</p>
+
+                        </li>
+                    ))
+                }
 
             </ul>
 

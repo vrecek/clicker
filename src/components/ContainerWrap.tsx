@@ -13,7 +13,10 @@ const ContainerWrap = ({children, updater}: WrapOptions) => {
     const [player] = React.useState<Player>( new Player(updater) )
 
     React.useEffect(() => {
-        // player.initializeDPS()
+        game.entryLoading()
+
+        player.initializeDPS()
+        // game.initializeTimer()
     }, [])
         
 

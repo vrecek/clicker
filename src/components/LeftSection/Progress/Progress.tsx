@@ -1,6 +1,7 @@
 import React from 'react'
 import Exp from './Exp'
 import Gold from './Gold'
+import Stats from './Stats'
 
 const Progress = () => {
     return (
@@ -8,6 +9,7 @@ const Progress = () => {
 
             <Gold />
             <Exp />
+            <Stats />
 
         </section>
     )

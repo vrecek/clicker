@@ -51,18 +51,40 @@ section.left-section {
 
             &.exp {
                 position: relative;
+                overflow: hidden;
 
                 p,
                 span { @include Layer(3); }
 
-                span.fill {
+                span.fill-exp-bar {
                     position: absolute;
                     z-index: 2;
                     left: 0;
                     top: 0;
                     background: $clr-blued;
-                    width: 20%;
                     height: 100%;
+                    width: 0%;
+                }
+            }
+
+            &.stats {
+                p {
+                    text-align: auto;
+                    background: red($color: #000000);
+                    font-weight: 700;
+
+                    span {
+                        @include Rectangle(30px);
+                    }
+
+                    &:nth-child(1) {
+                        @include Flex(none, c);
+                    }
+
+                    &:nth-child(2) {
+                        @include Flex(fe, c);
+                        span { margin: 0 0 0 1em; }
+                    }
                 }
             }
         }

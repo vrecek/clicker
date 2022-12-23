@@ -4,12 +4,12 @@ import Functionality from "../components/RightSection/Functionality"
 import Game from "./Game"
 import Player from "./Player"
 
-export type BuyAction = (currentUpgrade: Upgrade, player: Player) => void
+export type BuyAction<T> = (currentUpgrade: Upgrade<T>, player: Player) => void
 type CostIncrement = (totalOwned: number, currentPrice: number) => number
 
 
-export default class Upgrade {
-    public buffer: number | null
+export default class Upgrade<T = any> {
+    private buffer: T | null
 
     private image: string
     
@@ -17,14 +17,14 @@ export default class Upgrade {
     private desc: string
 
     private whatDesc: string
-    private whatDescNum: number
+    private whatDescNum: number | number[]
 
     private owned: number
     private maximum: number
 
     private cost: number
 
-    private buyFunc: BuyAction
+    private buyFunc: BuyAction<T>
     private costIncrementFunc: CostIncrement
 
 
@@ -35,11 +35,12 @@ export default class Upgrade {
         what: string, 
         maximum: number, 
         initialCost: number, 
-        buyFunc: BuyAction, 
+        buyFunc: BuyAction<T>, 
         costIncrementFunc: CostIncrement,
-        initialWhatNum?: number,
+        initialWhatNum?: number | number[],
+        buffer?: T
     ) {
-        this.buffer = null
+        this.buffer = buffer ?? null
 
         this.image = image
 
@@ -59,19 +60,41 @@ export default class Upgrade {
     }
 
 
+    private replaceInnerHTML(): string {
+        let whatText: string = this.whatDesc
+            .replaceAll('[[', '<span>')
+            .replaceAll(']]', '</span>')
+   
+
+        if(this.whatDescNum) {
+            if(typeof this.whatDescNum === 'number') 
+                return whatText.replaceAll('{{}}', `<span>${Game.numberFormat(this.whatDescNum)}</span>`)
+            
+
+            let i: number = 0
+            const whatNumbers: number[] = [...this.whatDescNum]
+            
+            whatText = whatText.replaceAll('{{}}', () => `<span>${Game.numberFormat(whatNumbers[i++] ?? 'EMPTY')}</span>`)
+        }
+                 
+        
+        return whatText
+    }
+
+
     // Returns upgrade component
-    public returnUpgradeComponent(player: Player): JSX.Element {
+    public returnUpgradeComponent(player: Player, iKey: number): JSX.Element {
         const buyAction = () => {
             if(
-                this.maximum !== 0 && (this.owned + 1 >= this.maximum)
-                || player.getGold < this.cost
+                this.maximum !== 0 && (this.owned + 1 > this.maximum)
+                || player.getInformation<number>('gold') < this.cost
             ) return
 
 
-            // Execute buyFunc passed in constructor
+            // Execute buyFunc that was passed in the constructor
             // And decerase player's gold
             this.buyFunc(this, player)
-            player.updateGold(-this.cost)
+            player.updateField('gold', -this.cost)
 
             // Update current upgrade cost
             this.cost += this.costIncrementFunc(this.owned, this.cost)
@@ -84,20 +107,18 @@ export default class Upgrade {
 
 
         // Replace [[]] and {{}} then pass value to the component
-        const whatText: string = this.whatDesc.replace('[[', '<span>')
-                                              .replace(']]', '</span>')
-                                              .replace('{{}}', `<span>${this.whatDescNum!.toString()}</span>`)
+        const whatText: string = this.replaceInnerHTML()
 
 
         return (
-            <article key={2} className="upgrade">
+            <article key={iKey} className="upgrade">
 
                 <FigureImage source={this.image} altTxt='Upgrade' />
 
                 <section className="right">
 
                     <Description desc={this.desc} header={this.name} />
-                    <Functionality cost={Game.fixedValue(this.cost)} owned={this.owned} buyFunc={buyAction} what={whatText} />
+                    <Functionality cost={Game.numberFormat(this.cost)} owned={this.owned} buyFunc={buyAction} what={whatText} />
 
                 </section>
 
@@ -111,9 +132,23 @@ export default class Upgrade {
         return this.owned
     }
 
+    // Returns upgrade's price
+    public get getPrice(): number {
+        return this.cost
+    }
 
-    // Updates "whatDescNum" value
-    public updateWhatValue(value: number) {
+    // Returns upgrade's price
+    public get getBuffer(): T | null {
+        return this.buffer
+    }
+
+    // Sets buffer value
+    public set setBuffer(value: T) {
+        this.buffer = value
+    }
+
+    // Sets "whatDescNum" value
+    public set setWhatValue(value: number | number[]) {
         this.whatDescNum = value
     }
 }
