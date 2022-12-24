@@ -8,10 +8,23 @@ section.display.skills {
     figure {
         height: 100%;
         cursor: pointer;
+        position: relative;
 
         img {
             @include FullSize;
             object-fit: cover;
+        }
+
+        div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            @include FullSize;
+            border-radius: .2em;
+            background: rgba(30, 30, 30, .9);
+            font-weight: 800;
+            font-size: 1.5rem;
+            @include Flex(c, c);
         }
     }
 }

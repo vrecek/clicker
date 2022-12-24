@@ -7,19 +7,23 @@ import DisplayToggle from './DisplayToggle'
 import MenuToggle from './MenuToggle'
 import Informations from './Display/Informations/Informations'
 
-const BottomBar = () => {
+const BottomBar = ({tick}: {tick: boolean}) => {
+    const containerRef = React.useRef<HTMLDivElement>(null)
+    const [currentDisplay, setPrev] = React.useState<DisplayOption>(DisplayOption.SKILLS)
     const [display, setDisplay] = React.useState<JSX.Element>(<Skills />)
 
-    const changeDisplay = (e: React.MouseEvent, section: DisplayOption): void => {
-        const t: HTMLElement = e.currentTarget as HTMLElement,
-              children: Element[] = [...t.parentElement!.children]
+
+    const changeDisplay = (elem: HTMLElement, section: DisplayOption): void => {
+        const children: Element[] = [...elem.parentElement!.children]
 
 
         for (const option of children) 
             option.className = ''
 
             
-        t.className = 'active'
+        elem.className = 'active'
+
+        setPrev(section)
 
         switch (section) {
             case DisplayOption.SKILLS:
@@ -41,6 +45,13 @@ const BottomBar = () => {
     }
 
 
+    React.useEffect(() => {
+        const current: HTMLElement = [...containerRef.current!.children][currentDisplay] as HTMLElement
+        
+        changeDisplay(current, currentDisplay)
+    }, [tick])
+
+
     return (
         <section className="bottom-bar">
 
@@ -50,6 +61,7 @@ const BottomBar = () => {
 
             <DisplayToggle 
                 changeFunc={changeDisplay}
+                containerRef={containerRef}
             />
 
         </section>

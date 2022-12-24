@@ -1,13 +1,16 @@
 import React from 'react'
-import FigureImage from '../../../Common/Image'
-import ch from '../../../../images/skills/chest-closed.png'
 import '../../../../css/Skills.css'
+import Game from '../../../../util/Game'
+import { GameContext } from '../../../ContainerWrap'
 
 const Skills = () => {
+    const GAME: Game = React.useContext(GameContext)
+
+
     return (
         <section className="display skills">
 
-            <FigureImage source={ch} />
+            { GAME.drawSkills() }
 
         </section>
     )

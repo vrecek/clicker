@@ -1,20 +1,31 @@
 import React from "react"
 import { StateUpdate } from "../interfaces/CommonInterfaces"
 import Player from "./Player"
+import Skill from "./Skill"
 import Upgrade from "./Upgrade"
 
 
 export default class Game {
     private secondsPlayed: number
     private animateState: boolean
+
     private upgrades: Upgrade[]
+    private skills: Skill[]
+
+    private player: Player
+
     private update: StateUpdate
 
 
-    public constructor(upgrades: Upgrade[], updater?: StateUpdate) {
+    public constructor(upgrades: Upgrade[], skills: Skill[], player?: Player, updater?: StateUpdate) {
         this.secondsPlayed = 0
         this.animateState = true
+
         this.upgrades = upgrades
+        this.skills = skills
+
+        this.player = player!
+
         this.update = updater!
     }
 
@@ -24,12 +35,13 @@ export default class Game {
         return parseFloat( (num).toFixed(2) )
     }
 
+    // Formats number to string (1K 1M 1B etc...)
     public static numberFormat(num: number): string {
         return new Intl.NumberFormat('en', {
-            notation: 'compact'
+            notation: 'compact',
+            maximumFractionDigits: 2
         }).format(this.fixedValue(num))
     }
-
 
     private randomNumber(num: number): number {
         return Math.floor(Math.random() * num) + 1
@@ -84,8 +96,15 @@ export default class Game {
     }
 
     // Draw all upgrades and return array of JSX Elements
-    public drawUpgrades(player: Player): JSX.Element[] {
-        return this.upgrades.map((x, i) => x.returnUpgradeComponent(player, i))
+    public drawUpgrades(): JSX.Element[] {
+        return this.upgrades.map((x, i) => x.returnUpgradeComponent(this.player, i))
+    }
+
+    // Draw all skills and return array of JSX Elements
+    public drawSkills(): JSX.Element[] {
+        return this.skills
+                .map((x, i) => x.returnSkillComponent(this.player, i))
+                .filter(x => x) as JSX.Element[]
     }
 
     // Animate sword image click
@@ -141,6 +160,7 @@ export default class Game {
         setTimeout(() => span.remove(), ms);
     }
 
+    // Re-renders the page
     public updateState(): void {
         this.update(curr => !curr)
     }

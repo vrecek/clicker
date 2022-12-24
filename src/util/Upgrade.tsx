@@ -6,7 +6,7 @@ import Player from "./Player"
 
 export type BuyAction<T> = (currentUpgrade: Upgrade<T>, player: Player) => void
 type CostIncrement = (totalOwned: number, currentPrice: number) => number
-
+type RefreshFunc = (upgrade: Upgrade, player: Player) => void
 
 export default class Upgrade<T = any> {
     private buffer: T | null
@@ -26,6 +26,7 @@ export default class Upgrade<T = any> {
 
     private buyFunc: BuyAction<T>
     private costIncrementFunc: CostIncrement
+    private refreshFunc: RefreshFunc | null
 
 
     public constructor(
@@ -38,7 +39,8 @@ export default class Upgrade<T = any> {
         buyFunc: BuyAction<T>, 
         costIncrementFunc: CostIncrement,
         initialWhatNum?: number | number[],
-        buffer?: T
+        buffer?: T,
+        refreshFunc?: RefreshFunc
     ) {
         this.buffer = buffer ?? null
 
@@ -57,6 +59,7 @@ export default class Upgrade<T = any> {
 
         this.buyFunc = buyFunc
         this.costIncrementFunc = costIncrementFunc
+        this.refreshFunc = refreshFunc ?? null
     }
 
 
@@ -104,6 +107,11 @@ export default class Upgrade<T = any> {
 
             player.updateState()
         }
+        
+
+        // Execute every render
+        if(this.refreshFunc)
+            this.refreshFunc(this, player)
 
 
         // Replace [[]] and {{}} then pass value to the component
@@ -140,6 +148,10 @@ export default class Upgrade<T = any> {
     // Returns upgrade's price
     public get getBuffer(): T | null {
         return this.buffer
+    }
+
+    public get getWhatDescValue() {
+        return this.whatDescNum
     }
 
     // Sets buffer value

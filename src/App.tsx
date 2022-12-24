@@ -6,8 +6,8 @@ import RightSection from './components/RightSection/RightSection'
 import './css/index.css'
 
 function App() {
-    const [, update] = React.useState<boolean>(false)
-
+    const [tick, update] = React.useState<boolean>(false)
+    // chest | timemaster | refresh values; add multiplier dps etc | change whatDesc in Upgrade to T (like buffer)
 
     return (
         <ContainerWrap updater={update}>
@@ -19,7 +19,7 @@ function App() {
 
             </div>
 
-            <BottomBar />
+            <BottomBar tick={tick} />
 
         </ContainerWrap>
     )

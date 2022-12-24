@@ -17,8 +17,10 @@ const Informations = () => {
             list: [
                 { value: plr.getInformation<string>('clickPower', true), what: 'Click power' },
                 { value: plr.getInformation<string>('dps', true), what: 'Damage Per Second' },
+                { value: plr.getInformation<number>('dpsMultiplier'), what: 'DPS Multiplier' },
                 { value: `${plr.getInformation<number>('critChance')}%`, what: 'Critical chance' },
-                { value: `${Game.fixedValue( plr.getInformation<number>('critPower') * 100 )}%`, what: 'Critical power' },
+                { value: `${plr.getInformation<number>('critPower') * 100}%`, what: 'Critical power' },
+                { value: `${plr.getInformation<number>('skillCooldown')}%`, what: 'Skill cooldown' },
             ]
         },
 
@@ -27,7 +29,8 @@ const Informations = () => {
             list: [
                 { value: plr.getInformation('level'), what: 'Level' },
                 { value: plr.getInformation('exp'), what: 'Experience' },
-                { value: plr.getInformation('expRequired'), what: 'Exp. Required' }
+                { value: plr.getInformation('expRequired'), what: 'Exp. Required' },
+                { value: plr.getInformation('expMultiplier'), what: 'Exp. Multiplier' }
             ]
         },
 

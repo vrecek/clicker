@@ -1,8 +1,10 @@
 import { StateUpdate } from "../interfaces/CommonInterfaces"
 import Game from "./Game"
 
-type InfoField = 'dps' | 'gold' | 'totalGold' | 'clickPower' | 'critPower' | 'critChance' | 'exp' | 'level' | 'expRequired'
-type UpdateField = 'clickPower' | 'dps' | 'critChance' | 'critPower' | 'gold' | 'exp'
+type CommonFields = 'dps' | 'gold' | 'totalGold' | 'clickPower' | 'critPower' | 'critChance' | 'exp' | 'dpsMultiplier' | 'expMultiplier' | 'skillCooldown'
+type InfoField = CommonFields | 'level' | 'expRequired'
+type UpdateField = CommonFields
+
 
 export default class Player {
     private totalGold: number
@@ -14,17 +16,22 @@ export default class Player {
     private critPower: number
 
     private dps: number
-
+    
     private level: number
     private exp: number
     private expRequired: number
-
+    
     private update: StateUpdate
+
+    private dpsMultiplier: number
+    private expMultiplier: number
+
+    private skillCooldown: number
 
 
     public constructor(updater?: StateUpdate) {
         this.totalGold = 0
-        this.gold = 1000000000
+        this.gold = 2000000
 
         this.clickPower = 1
 
@@ -32,17 +39,35 @@ export default class Player {
         this.critPower = 2
 
         this.dps = 0
-
-        this.level = 1
+        
+        this.level = 11
         this.exp = 0
         this.expRequired = 1000
+
+        this.dpsMultiplier = 1
+        this.expMultiplier = 1
+
+        this.skillCooldown = 0
         
         this.update = updater!
     }
 
 
+    private _updateValue(field: UpdateField, value: number, multiplier?: number): void {
+        this[field] = multiplier
+            ? Game.fixedValue((this[field] + value) * multiplier)
+            : Game.fixedValue(this[field] + value)
+    }
+
     private _checkExpUpdate(field: UpdateField, value: number): boolean {
-        if (field === 'exp' && (this.exp + value) >= this.expRequired) {
+        if (field !== 'exp') 
+            return false
+
+
+        const multipliedExp: number = value * this.expMultiplier
+
+        if (this.exp + multipliedExp >= this.expRequired ) {
+
             this.exp = 0
 
             this.expRequired *= (Math.ceil(this.level / 2.5) * 1.5)
@@ -52,14 +77,41 @@ export default class Player {
             return true
         }
 
+        this._updateValue(field, multipliedExp)
+
+        return true
+    }
+
+    private _checkGoldUpdate(field: UpdateField, value: number): boolean {
+        if(field !== 'gold')
+            return false
+
+
+        if (value > 0)
+            this._updateValue('totalGold', value)
+
+        
+        this._updateValue('gold', value)
+
+        return true
+    }
+
+    private _checkDpsUpdate(field: UpdateField, value: number): boolean {
+        if(field === 'dpsMultiplier') {
+            this._updateValue('dpsMultiplier', value)
+            this._updateValue('dps', 0, this.dpsMultiplier)
+
+            return true
+        }
+
+        if(field === 'dps') {
+            this._updateValue('dps', value, this.dpsMultiplier)
+
+            return true
+        } 
+
         return false
     }
-
-    private _checkGoldUpdate(field: UpdateField, value: number): void {
-        if (field === 'gold' && value > 0)
-            this.totalGold = Game.fixedValue(this.totalGold + value)
-    }
-
 
 
     // Calculate if critical hit would happen
@@ -79,8 +131,8 @@ export default class Player {
     // Start Damage Per Second interval
     public initializeDPS(): void {
         setInterval(() => {
-            this.updateField('gold', this.getInformation<number>('dps'))
-            this.updateField('exp', this.dps * 2)
+            this.updateField('gold', this.dps)
+            this.updateField('exp', this.dps * 1.5)
 
             this.updateState()
         }, 1000)
@@ -101,18 +153,24 @@ export default class Player {
 
     // Update player's field
     public updateField(field: UpdateField, value: number): void {
-        this._checkGoldUpdate(field, value)
+        if (this._checkGoldUpdate(field, value))
+            return
+   
 
         if (this._checkExpUpdate(field, value))
             return
 
 
-        this[field] = Game.fixedValue(this[field] + value)
+        if(this._checkDpsUpdate(field, value))
+            return
+
+
+        this._updateValue(field, value)
     }
 
 
     // Get information about player's field
-    public getInformation<T extends number | string>(field: InfoField, format?: boolean) {
+    public getInformation<T extends number | string>(field: InfoField, format?: boolean): T {
         return format
             ? Game.numberFormat(this[field]) as T
             : Game.fixedValue(this[field]) as T

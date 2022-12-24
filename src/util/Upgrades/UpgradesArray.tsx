@@ -1,9 +1,11 @@
 import Upgrade from "../Upgrade";
 import Blacksmith from "./Blacksmith";
+import GearUpgrade from "./Gear_Upgrade";
 import Henchman from "./Henchman";
 import MagicFurnace from "./Magic_Furnace";
 import Mercenaries from "./Mercenaries";
 import PrimaryWeapon from "./Primary_Weapon";
+import TimeMaster from "./Time_Master";
 
 
 const Upgrades: Upgrade[] = [
@@ -11,7 +13,9 @@ const Upgrades: Upgrade[] = [
     Henchman,
     Blacksmith,
     Mercenaries,
-    MagicFurnace
+    MagicFurnace,
+    GearUpgrade,
+    TimeMaster
 ]
 
 export default Upgrades

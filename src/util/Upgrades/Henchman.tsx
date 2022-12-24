@@ -15,6 +15,11 @@ const buyFunction = (upg: Upgrade<number>, player: Player): void => {
 
 const costIncrementFunction = (owned: number, price: number): number => Math.sqrt(price * owned)
 
+const refreshFunc = (upg: Upgrade, plr: Player): void => {
+    // console.log('xd')
+    
+}
+
 
 const Henchman: Upgrade<number> = new Upgrade<number>(
     u2,
@@ -26,7 +31,8 @@ const Henchman: Upgrade<number> = new Upgrade<number>(
     buyFunction,
     costIncrementFunction,
     1,
-    1
+    1,
+    refreshFunc
 )
 
 

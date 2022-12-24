@@ -3,18 +3,19 @@ import Game from '../util/Game'
 import Player from '../util/Player'
 import { WrapOptions } from '../interfaces/CommonInterfaces'
 import Upgrades from '../util/Upgrades/UpgradesArray'
+import Skills from '../util/Skills/SkillsArray'
 
-const GameContext = React.createContext<Game>(new Game([]))
+const GameContext = React.createContext<Game>(new Game([], []))
 const PlayerContext = React.createContext<Player>(new Player())
 
 
 const ContainerWrap = ({children, updater}: WrapOptions) => {
-    const [game] = React.useState<Game>( new Game(Upgrades, updater) )
     const [player] = React.useState<Player>( new Player(updater) )
+    const [game] = React.useState<Game>( new Game(Upgrades, Skills, player, updater) )
 
     React.useEffect(() => {
         game.entryLoading()
-
+        
         player.initializeDPS()
         // game.initializeTimer()
     }, [])

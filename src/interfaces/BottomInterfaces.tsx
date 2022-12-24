@@ -1,11 +1,15 @@
 export enum DisplayOption {
-    SKILLS = 'SKILLS',
-    QUESTS = 'QUESTS',
-    INFORMATIONS = 'INFORMATIONS'
+    SKILLS = '0',
+    QUESTS = '1',
+    INFORMATIONS = '2'
 }
 
 export type DisplayFunc = {
-    changeFunc: (e: React.MouseEvent, section: DisplayOption) => void
+    changeFunc: (e: HTMLElement, section: DisplayOption) => void
+}
+
+export type ToggleOptions = DisplayFunc & {
+    containerRef: React.RefObject<HTMLDivElement>
 }
 
 export type ToggleArrayOptions = [string, string, string]
