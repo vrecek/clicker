@@ -3,10 +3,9 @@ import Description from "../components/RightSection/Description"
 import Functionality from "../components/RightSection/Functionality"
 import Game from "./Game"
 import Player from "./Player"
+import { BuyAction, CostIncrement, PossibleGen, RefreshFunc } from "./Types/UpgradeTypes"
 
-export type BuyAction<T> = (currentUpgrade: Upgrade<T>, player: Player) => void
-type CostIncrement = (totalOwned: number, currentPrice: number) => number
-type RefreshFunc = (upgrade: Upgrade, player: Player) => void
+
 
 export default class Upgrade<T = any> {
     private buffer: T | null
@@ -17,7 +16,7 @@ export default class Upgrade<T = any> {
     private desc: string
 
     private whatDesc: string
-    private whatDescNum: number | number[]
+    private whatDescNum: T | null
 
     private owned: number
     private maximum: number
@@ -38,7 +37,7 @@ export default class Upgrade<T = any> {
         initialCost: number, 
         buyFunc: BuyAction<T>, 
         costIncrementFunc: CostIncrement,
-        initialWhatNum?: number | number[],
+        initialWhatNum?: T,
         buffer?: T,
         refreshFunc?: RefreshFunc
     ) {
@@ -50,7 +49,7 @@ export default class Upgrade<T = any> {
         this.desc = desc
 
         this.whatDesc = what
-        this.whatDescNum = initialWhatNum ?? 0
+        this.whatDescNum = initialWhatNum ?? null
 
         this.maximum = maximum
         this.owned = 0
@@ -73,6 +72,10 @@ export default class Upgrade<T = any> {
             if(typeof this.whatDescNum === 'number') 
                 return whatText.replaceAll('{{}}', `<span>${Game.numberFormat(this.whatDescNum)}</span>`)
             
+
+            if(!Array.isArray(this.whatDescNum)) 
+                return whatText
+
 
             let i: number = 0
             const whatNumbers: number[] = [...this.whatDescNum]
@@ -146,21 +149,21 @@ export default class Upgrade<T = any> {
     }
 
     // Returns upgrade's price
-    public get getBuffer(): T | null {
+    public get getBuffer(): PossibleGen<T> {
         return this.buffer
     }
 
-    public get getWhatDescValue() {
+    public get getWhatDescValue(): PossibleGen<T> {
         return this.whatDescNum
     }
 
     // Sets buffer value
-    public set setBuffer(value: T) {
+    public set setBuffer(value: PossibleGen<T>) {
         this.buffer = value
     }
 
     // Sets "whatDescNum" value
-    public set setWhatValue(value: number | number[]) {
+    public set setWhatValue(value: PossibleGen<T>) {
         this.whatDescNum = value
     }
 }

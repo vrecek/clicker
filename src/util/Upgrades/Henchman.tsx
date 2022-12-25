@@ -6,7 +6,7 @@ import Player from "../Player";
 const buyFunction = (upg: Upgrade<number>, player: Player): void => {
     player.updateField('dps', upg.getBuffer!)
 
-    const newValue: number = upg.getOwned * Math.cbrt(upg.getOwned / 2) || 1 
+    const newValue: number = upg.getOwned * Math.cbrt(upg.getOwned / 2.5) || 1 
     
     upg.setBuffer = newValue
 
@@ -15,9 +15,8 @@ const buyFunction = (upg: Upgrade<number>, player: Player): void => {
 
 const costIncrementFunction = (owned: number, price: number): number => Math.sqrt(price * owned)
 
-const refreshFunc = (upg: Upgrade, plr: Player): void => {
-    // console.log('xd')
-    
+const refreshFunc = (upg: Upgrade<number>, plr: Player): void => {
+    upg.setWhatValue = upg.getBuffer! * plr.getInformation<number>('dpsMultiplier')
 }
 
 

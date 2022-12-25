@@ -1,6 +1,8 @@
+import React from "react";
 import Player from "./Player";
+import { ClickAction, OnHoverInfo } from "./Types/SkillTypes";
 
-type ClickAction = (player: Player) => void
+
 
 export default class Skill {
     private className: string
@@ -20,8 +22,18 @@ export default class Skill {
 
     private clickAction: ClickAction
 
+    private hoverDetails: OnHoverInfo
 
-    public constructor(cname: string, imageReady: string, imageOnCooldown: string, cooldown: number, levelRequirement: number, clickAction: ClickAction) {
+
+    public constructor(
+        cname: string, 
+        imageReady: string, 
+        imageOnCooldown: string, 
+        cooldown: number, 
+        levelRequirement: number, 
+        clickAction: ClickAction,
+        hoverDetails: OnHoverInfo
+    ) {
         this.className = cname
 
         this.imageReady = imageReady
@@ -38,6 +50,8 @@ export default class Skill {
         this.currentTimeout = null
 
         this.clickAction = clickAction
+
+        this.hoverDetails = hoverDetails
     }
 
 
@@ -113,6 +127,51 @@ export default class Skill {
         this.cooldown = this.originalCooldown - Math.trunc((this.originalCooldown / 100) * cooldownReduce)
     }
 
+    private _hoverDisplay(e: React.MouseEvent) {
+        const t: HTMLElement = e.currentTarget! as HTMLElement
+
+        const article = document.createElement('article'),
+              header = document.createElement('p'),
+              description = document.createElement('p'),
+              box = document.createElement('div'),
+              whatMsg = document.createElement('p'),
+              cd = document.createElement('div')
+
+
+        const {desc, name, what} = this.hoverDetails
+
+        header.className = 'header'
+        header.textContent = name
+
+        description.className = 'description'
+        description.innerHTML = desc
+
+        whatMsg.innerHTML = what.replaceAll('[[', '<span>')
+                                  .replaceAll(']]', '</span>')
+
+
+        box.className = 'hover-box'
+        box.appendChild(whatMsg)
+
+        cd.className = 'hover-cooldown'
+        cd.textContent = `${this.cooldown}s`
+
+        article.appendChild(header)
+        article.appendChild(description)
+        article.appendChild(box)
+        article.appendChild(cd)
+
+        t.parentElement!.appendChild(article)
+    }
+
+    private _hoverRemove(e: React.MouseEvent) {
+        const t: HTMLElement = e.currentTarget! as HTMLElement
+
+        for (const element of [...t.parentElement!.children]) 
+            if (element.tagName === 'ARTICLE')
+                element.remove()
+    }
+
 
 
     public returnSkillComponent = (player: Player, iKey: number): JSX.Element | null => {
@@ -133,12 +192,18 @@ export default class Skill {
             player.updateState()
         }
 
+
         this._reAttachCooldown(player)
 
 
         return (
-            <figure className={this.className} key={iKey} onClick={skillAction}>
-
+            <figure 
+            onMouseLeave={this._hoverRemove} 
+            onMouseEnter={(e) => this._hoverDisplay(e)} 
+            onClick={skillAction} 
+            className={this.className} 
+            key={iKey}
+            >
                 <img 
                     src={
                         this.isOnCooldown

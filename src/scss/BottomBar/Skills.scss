@@ -15,7 +15,7 @@ section.display.skills {
             object-fit: cover;
         }
 
-        div {
+        div:not(.hover-box) {
             position: absolute;
             left: 0;
             top: 0;
@@ -25,6 +25,94 @@ section.display.skills {
             font-weight: 800;
             font-size: 1.5rem;
             @include Flex(c, c);
+        }
+    }
+
+    article {
+        position: absolute;
+        left: 50%;
+        translate: -50% 0;
+        z-index: 8;
+        bottom: 100%;
+        border: 2px solid rgb(80, 76, 74);
+        background: rgb(30, 30, 30);
+        border-bottom: 0;
+        border-radius: .25em .25em 0 0;
+        padding: 3em;
+        @include Flex(sb, c, c);
+
+        div.hover-cooldown {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: .5em;
+            font-size: .9rem;
+            padding-right: calc(.5em + 20px);
+            font-weight: 700;
+            color: $clr-grey;
+            font-family: 'Comfortaa', cursive;
+            color: $clr-white;
+
+            &::before,
+            &::after {
+                position: absolute;
+                right: .5em;
+                @include Rectangle(10px);
+                background: $clr-white;
+                content: '';
+                rotate: 45deg;
+                border-radius: .15em;
+            }
+
+            &::before {
+                top: 29%;
+            }
+
+            &::after {
+                bottom: 29%;
+            }
+        }
+
+        div.hover-box {
+            padding: 1.25em;
+            width: 100%;
+            text-align: center;
+            border-radius: .25em;
+            background: rgb(25, 25, 25);
+
+            p {
+                font-size: .95rem;
+                
+                span {
+                    color: $clr-orange;
+                }
+            }
+        }
+
+        p.header {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        p.description {
+            font-family: 'Comfortaa', cursive;
+            font-size: .9rem;
+            line-height: 1.5em;
+            margin: 2em 0;
+            text-align: center;
+            color: $clr-grey;
+        }
+
+        &::before {
+            content: '';
+            @include Rectangle(40px);
+            background: rgba(30, 30, 30, 1);
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            translate: -50% -50%;
+            rotate: 45deg;
         }
     }
 }

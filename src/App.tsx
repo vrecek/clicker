@@ -7,8 +7,8 @@ import './css/index.css'
 
 function App() {
     const [tick, update] = React.useState<boolean>(false)
-    // chest | timemaster | refresh values; add multiplier dps etc | change whatDesc in Upgrade to T (like buffer)
 
+    
     return (
         <ContainerWrap updater={update}>
 

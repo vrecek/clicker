@@ -4,6 +4,8 @@ import u5 from '../../images/upgrades/u5.jpg'
 
 type CPaDPS = [number, number]
 
+const getDPSValue = (dps: number, cp: number): number => dps + Math.sqrt(cp) * .8
+
 const buyFunction = (upg: Upgrade<CPaDPS>, plr: Player): void => {
     const [cp, dps] = upg.getBuffer!
 
@@ -12,7 +14,7 @@ const buyFunction = (upg: Upgrade<CPaDPS>, plr: Player): void => {
 
     const newValues: CPaDPS = [
         cp + Math.sqrt(dps) * .25,
-        dps + Math.sqrt(cp) * .8
+        getDPSValue(dps, cp)
     ]
 
     upg.setBuffer = newValues
@@ -22,6 +24,15 @@ const buyFunction = (upg: Upgrade<CPaDPS>, plr: Player): void => {
 
 const costIncrementFunction = (owned: number, price: number): number => {
     return owned * (price / 4) / (owned || 1)
+}
+
+const refreshFunc = (upg: Upgrade<CPaDPS>, plr: Player): void => {
+    const [cp, dps] = upg.getBuffer!
+
+    upg.setWhatValue = [
+        cp,
+        dps * plr.getInformation<number>('dpsMultiplier')
+    ]
 }
 
 
@@ -35,7 +46,8 @@ const Mercenaries: Upgrade<CPaDPS> = new Upgrade<CPaDPS>(
     buyFunction,
     costIncrementFunction,
     [1, 2],
-    [1, 2]
+    [1, 2],
+    refreshFunc
 )
 
 

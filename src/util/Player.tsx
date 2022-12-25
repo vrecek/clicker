@@ -1,9 +1,6 @@
 import { StateUpdate } from "../interfaces/CommonInterfaces"
 import Game from "./Game"
-
-type CommonFields = 'dps' | 'gold' | 'totalGold' | 'clickPower' | 'critPower' | 'critChance' | 'exp' | 'dpsMultiplier' | 'expMultiplier' | 'skillCooldown'
-type InfoField = CommonFields | 'level' | 'expRequired'
-type UpdateField = CommonFields
+import { InfoField, UpdateField } from "./Types/PlayerTypes"
 
 
 export default class Player {
@@ -16,6 +13,7 @@ export default class Player {
     private critPower: number
 
     private dps: number
+    private originalDps: number
     
     private level: number
     private exp: number
@@ -31,7 +29,7 @@ export default class Player {
 
     public constructor(updater?: StateUpdate) {
         this.totalGold = 0
-        this.gold = 2000000
+        this.gold = 10000000
 
         this.clickPower = 1
 
@@ -39,10 +37,12 @@ export default class Player {
         this.critPower = 2
 
         this.dps = 0
+        this.originalDps = 0
         
-        this.level = 11
+        this.level = 1
+        
         this.exp = 0
-        this.expRequired = 1000
+        this.expRequired = 1250
 
         this.dpsMultiplier = 1
         this.expMultiplier = 1
@@ -97,20 +97,35 @@ export default class Player {
     }
 
     private _checkDpsUpdate(field: UpdateField, value: number): boolean {
+        if(field !== 'dpsMultiplier' && field !== 'dps')
+            return false
+
+
+        const dps = this.getInformation<number>('dps'),
+              odps = this.getInformation<number>('originalDps')
+
+
+        // If -dpsMultiplier- is upgraded
         if(field === 'dpsMultiplier') {
             this._updateValue('dpsMultiplier', value)
-            this._updateValue('dps', 0, this.dpsMultiplier)
+            this._updateValue(
+                'dps', 
+                -dps + odps, 
+                this.dpsMultiplier
+            )
 
             return true
         }
 
-        if(field === 'dps') {
-            this._updateValue('dps', value, this.dpsMultiplier)
+        // If -dps- is upgraded
+        this._updateValue('originalDps', value)
+        this._updateValue(
+            'dps', 
+            -dps + odps + value, 
+            this.dpsMultiplier
+        )
 
-            return true
-        } 
-
-        return false
+        return true
     }
 
 
