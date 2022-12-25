@@ -1,14 +1,17 @@
 import React from 'react'
-import Available from './Available'
+import Game from '../../../../../util/Game'
+import { GameContext } from '../../../../ContainerWrap'
 
 const AllQuests = () => {
+    const GAME: Game = React.useContext(GameContext)
+
+
     return (
         <section className="all-quests">
 
-            <Available />
-            <Available />
-            <Available />
-            <Available />
+            { 
+                GAME.drawQuests() 
+            }
 
         </section>
     )

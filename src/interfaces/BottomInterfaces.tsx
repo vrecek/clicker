@@ -28,3 +28,8 @@ export type BottomList = {
     what: string
     value: string | number
 }
+
+export type RewardValues = {
+    gold: number
+    exp: number
+}

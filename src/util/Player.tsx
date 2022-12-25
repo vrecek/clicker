@@ -143,14 +143,10 @@ export default class Player {
     }
 
 
-    // Start Damage Per Second interval
+    // Start Damage Per Second; Pass to main interval
     public initializeDPS(): void {
-        setInterval(() => {
-            this.updateField('gold', this.dps)
-            this.updateField('exp', this.dps * 1.5)
-
-            this.updateState()
-        }, 1000)
+        this.updateField('gold', this.dps)
+        this.updateField('exp', this.dps * 1.5)
     }
 
 

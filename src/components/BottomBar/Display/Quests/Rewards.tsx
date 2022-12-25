@@ -1,9 +1,10 @@
 import React from 'react'
 import { AiFillGold } from 'react-icons/ai'
 import {BsBook} from 'react-icons/bs'
+import { RewardValues } from '../../../../interfaces/BottomInterfaces'
 import Icon from '../../../Common/Icon'
 
-const Rewards = () => {
+const Rewards = ({gold, exp}: RewardValues) => {
     return (
         <section className="rewards">
 
@@ -13,12 +14,12 @@ const Rewards = () => {
 
                 <div>
                     <Icon cname='gold'><AiFillGold /></Icon>
-                    8678 
+                    {gold} 
                 </div>
 
                 <div>
                     <Icon cname='exp'><BsBook /></Icon>
-                    1231
+                    {exp}
                 </div>
 
             </section>
