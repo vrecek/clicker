@@ -28,6 +28,7 @@ const Click = () => {
 
         PLAYER.updateField('gold', damage)
         PLAYER.updateField('exp', PLAYER.getInformation('clickPower'))
+        GAME.updateTotals('totalClicks', 1)
 
         GAME.updateState()
     }

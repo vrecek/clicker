@@ -173,6 +173,30 @@ export default class Skill {
     }
 
 
+    public createResultBox(text: string, removeAfterMs: number): void {
+        const article = document.createElement('article'),
+              p = document.createElement('p'),
+              pInfo = document.createElement('p')
+
+        
+        p.className = 'p-text'
+        p.innerHTML = text.replaceAll('[[', '<span>')
+                          .replaceAll(']]', '</span>')
+
+            
+        pInfo.className = 'p-info'
+        pInfo.textContent = 'i'
+
+        article.className = 'skill-article-result'
+        article.appendChild(p)
+        article.appendChild(pInfo)
+
+        document.body.appendChild(article)
+
+        setTimeout(() => {
+            article.remove()
+        }, removeAfterMs);
+    }
 
     public returnSkillComponent = (player: Player, iKey: number): JSX.Element | null => {
         if (player.getInformation('level') < this.levelRequirement)
@@ -187,7 +211,7 @@ export default class Skill {
                 return
 
 
-            this.clickAction(player)
+            this.clickAction(player, this)
 
             player.updateState()
         }

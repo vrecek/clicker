@@ -14,15 +14,16 @@ const ContainerWrap = ({children, updater}: WrapOptions) => {
     const [player] = React.useState<Player>( new Player(updater) )
     const [game] = React.useState<Game>( new Game(Upgrades, Skills, Quests, player, updater) )
 
+    game.listenQuestEvent()
+
     React.useEffect(() => {
         game.entryLoading()
 
-    
         game.mainInterval(() => {
 
             player.initializeDPS()
             game.determineNewQuests()
-            // game.initializeTimer()
+            game.initializeTimer()
 
         })
     }, [])

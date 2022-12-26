@@ -1,5 +1,4 @@
 import React from "react"
-import Button from "../components/Common/Button"
 import { StateUpdate } from "../interfaces/CommonInterfaces"
 import Player from "./Player"
 import Quest from "./Quest"
@@ -8,10 +7,15 @@ import Upgrade from "./Upgrade"
 
 
 type MainInterval = () => void
+type Totals = 'totalClicks' | 'totalUpgrades' | 'totalSkillsUsed' | 'totalSecondsPlayed'
 
 
 export default class Game {
-    private secondsPlayed: number
+    private totalSecondsPlayed: number
+    private totalClicks: number
+    private totalUpgrades: number
+    private totalSkillsUsed: number
+
     private animateState: boolean
 
     private upgrades: Upgrade[]
@@ -27,7 +31,12 @@ export default class Game {
 
 
     public constructor(upgrades: Upgrade[], skills: Skill[], quests: Quest[], player?: Player, updater?: StateUpdate) {
-        this.secondsPlayed = 0
+        this.totalSecondsPlayed = 0
+
+        this.totalClicks = 0
+        this.totalUpgrades = 0
+        this.totalSkillsUsed = 0
+
         this.animateState = true
 
         this.upgrades = upgrades
@@ -75,28 +84,24 @@ export default class Game {
 
     // Searches for quests and sets them visible
     public determineNewQuests(): void {
-        if (!Quest.shouldAddNewQuest())
+        const MAX_QUESTS: number = 3
+
+        if (this.visibleQuests.length === MAX_QUESTS || !Quest.shouldAddNewQuest())
             return
 
 
         const randomIndex: number = ~~(Math.random() * this.quests.length),
               randomQuest = this.quests[randomIndex]
 
-
+              
         if (
-            this.visibleQuests.some(x => 
-                x.getQuestName === randomQuest.getQuestName 
-                || this.player.getInformation<number>('level') < x.getQuestRequiredLevel 
-            )
+            this.player.getInformation('level') < randomQuest.getQuestRequiredLevel
+            ||
+            (this.activeQuest && this.activeQuest.getQuestName === randomQuest.getQuestName)
+            || 
+            this.visibleQuests.some(x => x.getQuestName === randomQuest.getQuestName)
         ) return
-
-
-        const MAX_QUESTS: number = 3
-
-        if (this.visibleQuests.length === MAX_QUESTS) {
-            this.visibleQuests[MAX_QUESTS - 1].deleteRewardValues()
-        }
-
+        
 
         this.visibleQuests = [randomQuest, ...this.visibleQuests].slice(0, MAX_QUESTS)
     }
@@ -131,12 +136,12 @@ export default class Game {
 
     // Start play timer; Pass to main interval
     public initializeTimer(): void {
-        this.secondsPlayed++
+        this.totalSecondsPlayed++
     }
 
     // Get playtime <hh:mm:ss>
     public calculatePlayTime(): string {
-        const sp: number = this.secondsPlayed
+        const sp: number = this.totalSecondsPlayed
 
         const h: string = `0${Math.floor(sp / 3600 || 0)}`.slice(-2),
               m: string = `0${Math.floor(sp / 60 || 0) % 60}`.slice(-2),
@@ -160,7 +165,7 @@ export default class Game {
 
     // Draw all quests and return array of JSX Elements
     public drawQuests(): JSX.Element[] {
-        return this.visibleQuests.map((x, i) => x.returnQuestComponent(this.player, this, i))
+        return this.visibleQuests.map((x, i) => x.returnQuestComponent(this, i))
     }
 
     // Draw active quest
@@ -169,7 +174,7 @@ export default class Game {
             return <></>
 
 
-        return this.activeQuest.returnActiveQuestComponent(this.player)
+        return this.activeQuest.returnActiveQuestComponent(this)
     }
 
     // Animate sword image click
@@ -228,5 +233,63 @@ export default class Game {
     // Re-renders the page
     public updateState(): void {
         this.update(curr => !curr)
+    }
+
+    // Removes quest from visibleQuests (trash)
+    public removeVisibleQuest(questName: string, dontUpdateState?: boolean): void {
+        this.visibleQuests = this.visibleQuests.filter(x => x.getQuestName !== questName)
+
+
+        if (dontUpdateState)
+            return
+
+
+        this.updateState()
+    }
+
+    // Removes current active quest
+    public removeActiveQuest(): void {
+        this.activeQuest = null
+    }
+
+    // Removes quest from visibleQuests (accept)
+    public addActiveQuest(quest: Quest): void {
+        if (this.activeQuest)
+            return
+
+
+        this.removeVisibleQuest(quest.getQuestName, true)
+
+        this.activeQuest = quest
+
+        this.updateState()
+    }
+
+    // Listen for current active quest tracker function
+    public listenQuestEvent(): void {
+        if (!this.activeQuest)
+            return
+
+
+        this.activeQuest.getTrackerFunction(this.player, this, this.activeQuest)
+    }
+
+
+
+    // Removes quest from visibleQuests
+    public get getVisibleQuests(): Quest[] {
+        return this.visibleQuests
+    }
+
+    // Get total field
+    public getTotals(field: Totals): number {
+        return this[field]
+    }
+
+    // Set total field
+    public updateTotals(field: Totals, value: number, replace?: boolean): void {
+        replace
+            ? this[field] = value
+            : this[field] += value
     }
 }

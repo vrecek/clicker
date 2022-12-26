@@ -1,11 +1,12 @@
 import React from 'react'
+import { QuestDescription } from '../../../../../interfaces/BottomInterfaces'
 
-const Description = () => {
+const Description = ({name, desc}: QuestDescription) => {
     return (
         <section className="description">
 
-            <p className="quest-header">Lorem ipsum dolorsit</p>
-            <p className="desc">Laboriosam id culpa corrupti, reprehenderit veritatis voluptatum! Quisquam, adipisci ut. Consequatur, doloremque!</p>
+            <p className="quest-header">{name}</p>
+            <p className="desc">{desc}</p>
 
         </section>
     )

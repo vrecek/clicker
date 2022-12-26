@@ -1,16 +1,17 @@
 import React from 'react'
+import { QuestTracking } from '../../../../../interfaces/BottomInterfaces'
 
-const QuestProgress = () => {
+const QuestProgress = ({target, trackerMax, trackerCurrent}: QuestTracking) => {
     return (
         <section className="quest-progress">
 
             <p className="progress">Progress</p>
 
-            <p className="mission">Collect 9 lorem</p>
+            <p className="mission">{target}</p>
 
             <div>
 
-                0 / 9
+                {trackerCurrent} / {trackerMax}
 
             </div>
 

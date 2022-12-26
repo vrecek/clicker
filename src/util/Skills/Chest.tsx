@@ -5,7 +5,7 @@ import Player from "../Player"
 import Game from "../Game"
 
 
-const clickAction = (plr: Player): void => {
+const clickAction = (plr: Player, skill: Skill): void => {
     const dps: number = plr.getInformation<number>('dps'),
           cp: number = plr.getInformation<number>('clickPower'),
           random: number = Math.floor(Math.random() * (dps / 4)) * (cp / 1.5),
@@ -15,6 +15,7 @@ const clickAction = (plr: Player): void => {
     const goldGained: number = plr.getInformation<number>('level') * random * randomEnd
 
     plr.updateField('gold', goldGained)
+    skill.createResultBox(`Gained [[${Game.numberFormat(goldGained)}]] gold`, 3000)
 }
 
 
@@ -23,7 +24,7 @@ const Chest: Skill = new Skill(
     chestReady,
     chestCooldown,
     240,
-    1,
+    5,
     clickAction,
     { 
         name: 'Random chest', 

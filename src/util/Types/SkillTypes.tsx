@@ -1,4 +1,5 @@
 import Player from "../Player"
+import Skill from "../Skill"
 
 export type OnHoverInfo = {
     name: string
@@ -6,4 +7,4 @@ export type OnHoverInfo = {
     what: string
 }
 
-export type ClickAction = (player: Player) => void
+export type ClickAction = (player: Player, skill: Skill) => void

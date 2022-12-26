@@ -29,7 +29,7 @@ export default class Player {
 
     public constructor(updater?: StateUpdate) {
         this.totalGold = 0
-        this.gold = 10000000
+        this.gold = 0
 
         this.clickPower = 1
 
@@ -70,7 +70,7 @@ export default class Player {
 
             this.exp = 0
 
-            this.expRequired *= (Math.ceil(this.level / 2.5) * 1.5)
+            this.expRequired *= (Math.ceil(this.level / 2.5) * 1.25)
 
             this.level++
 

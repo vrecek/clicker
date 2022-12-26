@@ -20,8 +20,8 @@ export default class Quest<T = any> {
     private desc: string
     private target: string
 
-    private trackerMaxValue: number | null
-    private trackerProgressValue: number | null
+    private trackerMaxValue: number
+    private trackerProgressValue: number
     private trackerFunc: TrackerFunction
 
     private buffer: T | null
@@ -35,8 +35,7 @@ export default class Quest<T = any> {
         desc: string, 
         target: string, 
         trackerFunc: TrackerFunction,
-        trackerMaxValue?: number,
-        trackerProgressValue?: number
+        trackerMaxValue: number,
     ) {
         this.expRange = expRange
         this.goldRange = goldRange
@@ -50,8 +49,8 @@ export default class Quest<T = any> {
         this.target = target
 
         this.trackerFunc = trackerFunc
-        this.trackerMaxValue = trackerMaxValue ?? null
-        this.trackerProgressValue = trackerProgressValue ?? null
+        this.trackerMaxValue = trackerMaxValue
+        this.trackerProgressValue = 0
 
         this.buffer = null
     }
@@ -75,46 +74,77 @@ export default class Quest<T = any> {
         }
     }
 
-
-
     // Delete rewardValues
-    public deleteRewardValues(): void {
+    private deleteActiveQuestSettings(): void {
         this.rewardValues = null
+        this.trackerProgressValue = 0
+        this.buffer = null
     }
+
+
 
     // Returns true if quest should be added
     public static shouldAddNewQuest(): boolean {
         const num: number = ~~(Math.random() * 100) + 1
 
-        return num !== 1
+        return num <= 5
             ? true
             : false
     }
 
+    // Finishes quest --> Add gold, exp | reset active quest settings | remove from active
+    public finishQuest(player: Player, game: Game): void {
+        const {gold, exp} = this.rewardValues!
+
+        player.updateField('gold', gold)
+        player.updateField('exp', exp)
+        
+        game.removeActiveQuest()
+
+        this.deleteActiveQuestSettings()
+    }
+
     // Returns active quest component
-    public returnActiveQuestComponent(player: Player): JSX.Element {
+    public returnActiveQuestComponent(game: Game): JSX.Element {
+        const {gold, exp} = this.rewardValues!
+
+        const cancelQuest = (): void => {
+            this.deleteActiveQuestSettings()
+            game.removeActiveQuest()
+        }
+
         return (
             <article className="active">
 
-                <Description />
+                <Description name={this.name} desc={this.desc} />
 
-                <QuestProgress />
+                <QuestProgress 
+                    trackerCurrent={this.trackerProgressValue} 
+                    trackerMax={this.trackerMaxValue}
+                    target={this.target} 
+                />
 
-                <Rewards gold={5} exp={5} />
+                <Rewards gold={gold} exp={exp} />
 
-                <Button cname='cancel' text='Cancel' />
+                <Button action={cancelQuest} cname='cancel' text='Cancel' />
 
             </article>
         )
     }
 
     // Returns pending quest component
-    public returnQuestComponent(player: Player, game: Game, iKey: number): JSX.Element {
+    public returnQuestComponent(game: Game, iKey: number): JSX.Element {
         this.checkForRewardValues()
 
         const {gold, exp} = this.rewardValues!
 
-        // action -> accept / cancel
+        const trashQuest = (): void => {
+            this.deleteActiveQuestSettings()
+            game.removeVisibleQuest(this.name)
+        }
+        const acceptQuest = (): void => game.addActiveQuest(this)
+        
+
         return (
             <article key={iKey} className="available">
 
@@ -125,8 +155,8 @@ export default class Quest<T = any> {
 
                 <section className="options">
 
-                    <Button cname='accept' text='Accept' />
-                    <Button cname='trash' text='Trash' />
+                    <Button action={acceptQuest} cname='accept' text='Accept' />
+                    <Button action={trashQuest} cname='trash' text='Trash' />
 
                 </section>
 
@@ -134,14 +164,26 @@ export default class Quest<T = any> {
         )
     }
 
-
-
     // Set tracker actual value
-    public set setTrackerProgressValue(num: number) {
-        this.trackerProgressValue = num
+    public setTrackerProgressValue(num: number, replace?: boolean) {
+        replace
+            ? this.trackerProgressValue = num
+            : this.trackerProgressValue += num
     }
 
 
+
+    // Set buffer value
+    public set setBuffer(value: T) {
+        this.buffer = value
+    }
+
+
+
+    // Get tracker function to listen
+    public get getTrackerFunction(): TrackerFunction {
+        return this.trackerFunc
+    }
 
     // Get buffer value
     public get getBuffer(): T | null {
@@ -149,12 +191,12 @@ export default class Quest<T = any> {
     }
 
     // Get tracker acutal value
-    public get getTrackerProgressValue(): number | null {
+    public get getTrackerProgressValue(): number {
         return this.trackerProgressValue
     }
 
     // Get tracker maximum value
-    public get getTrackerMaxValue(): number | null {
+    public get getTrackerMaxValue(): number {
         return this.trackerMaxValue
     }
 

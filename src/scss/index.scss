@@ -40,4 +40,40 @@ body {
     div.two-sections-wrap {
         @include Flex(sa);
     }
+
+    article.skill-article-result {
+        position: fixed;
+        top: 0;
+        right: 0;
+        font-size: 1rem;
+        background: #303030;
+        padding: 1em;
+        border-radius: .15em;
+        @include Flex(sb, c);
+
+        p {
+            &.p-info {
+                border-radius: 50%;
+                text-align: center;
+                background: $clr-white;
+                color: $clr-black;
+                font-size: 1.25rem;
+                margin-left: 1em;
+                @include Rectangle(40px);
+                font-weight: 800;
+                @include Flex(c, c);
+            }
+
+            &.p-text {
+                color: $clr-white;
+                font-family: 'Comfortaa', cursive;                
+                font-weight: 700;
+                font-size: .9rem;
+
+                span {
+                    color: $clr-orange;
+                }
+            }
+        }
+    }
 }

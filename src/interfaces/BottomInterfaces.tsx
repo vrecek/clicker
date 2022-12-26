@@ -33,3 +33,14 @@ export type RewardValues = {
     gold: number
     exp: number
 }
+
+export type QuestDescription = {
+    name: string
+    desc: string
+}
+
+export type QuestTracking = {
+    trackerMax: number
+    trackerCurrent: number
+    target: string
+}
