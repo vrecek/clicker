@@ -5,7 +5,7 @@ section.bottom-bar {
     color: $clr-white;
     @include Flex(none, c);
     transition: .5s;
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;

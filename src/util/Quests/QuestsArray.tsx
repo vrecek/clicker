@@ -6,10 +6,10 @@ import Quest_Lvl_5_4 from "./Quest_Lvl_5_4";
 
 
 const Quests: Quest[] = [
-    Quest_Lvl_5_1,
-    Quest_Lvl_5_2,
-    Quest_Lvl_5_3,
-    Quest_Lvl_5_4
+    Quest_Lvl_5_1
+    // Quest_Lvl_5_2,
+    // Quest_Lvl_5_3,
+    // Quest_Lvl_5_4
 ]
 
 

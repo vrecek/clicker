@@ -10,6 +10,7 @@ section.left-section {
         flex-grow: 1;
         cursor: pointer;
         transition: .1s;
+        user-select: none;
         
         div.image {
             @include FullSize;

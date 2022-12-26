@@ -26,7 +26,7 @@ const tracerFunc = (player: Player, game: Game, quest: Quest<number>): void => {
 const Quest_Lvl_5_1: Quest = new Quest<number>(
     {min: 500, max: 1500},
     {min: 2000, max: 5000},
-    1,
+    5,
     'Fighting master',
     'Desc quest 5 1',
     'Click 1000 times',
