@@ -14,7 +14,7 @@ const buyFunction = (upg: Upgrade<number>, player: Player): void => {
 }
 
 const costIncrementFunction = (owned: number, price: number): number => {
-    return Math.sqrt(owned * price) 
+    return Math.sqrt(owned * 1.25 * price) 
            + Math.sqrt( price / (owned || 1) )
 }
 

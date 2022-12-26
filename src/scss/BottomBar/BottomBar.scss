@@ -50,6 +50,10 @@ section.bottom-bar {
     section.display {
         max-height: 95vh;
         overflow-y: scroll;
+
+        @media (max-width: 768px) {
+            max-height: 80vh;
+        }
     }
 
     span.toggle-bottom-bar {

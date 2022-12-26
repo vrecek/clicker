@@ -14,6 +14,7 @@ section.left-section {
         
         div.image {
             @include FullSize;
+            pointer-events: none;
 
             figure {
                 @include Flex(c, c);
@@ -21,12 +22,13 @@ section.left-section {
     
                 img {
                     height: 80%;
+                    user-select: none;
+                    -webkit-tap-highlight-color: transparent;
                 }
             }
         }
 
         @media (max-width: 768px) {
-            // height: 70vh;
             flex-grow: 0;
 
             div.image {
