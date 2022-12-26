@@ -4,11 +4,12 @@ section.display.informations {
     width: 100%;
     @include Flex(sa);
     padding: 3em 1em;
+    flex-wrap: wrap;
 
     div.information {
         @include Flex(none, c, c);
         flex-grow: 1;
-        padding: 0 1em;
+        padding: 0 1em; 
 
         p.header {
             margin-bottom: 2em;
@@ -37,6 +38,14 @@ section.display.informations {
                         font-weight: 600;
                     }
                 }
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        div.information {
+            ul {
+                width: 100%;
             }
         }
     }

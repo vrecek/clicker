@@ -3,10 +3,14 @@
 section.display.skills {
     height: 13vh;
     @include Flex(none, c);
+    width: 100%;
     padding: 20px calc(.5em + 45px);
-    
+    overflow-x: scroll;
+
     figure {
         height: 100%;
+        flex-shrink: 0;
+        margin: 0 .75em;
         cursor: pointer;
         position: relative;
 
@@ -23,7 +27,7 @@ section.display.skills {
             border-radius: .2em;
             background: rgba(30, 30, 30, .9);
             font-weight: 800;
-            font-size: 1.5rem;
+            @include Clamp(1, 5, 1.5);
             @include Flex(c, c);
         }
     }
@@ -114,5 +118,9 @@ section.display.skills {
             translate: -50% -50%;
             rotate: 45deg;
         }
+    }
+
+    @media (max-width: 768px) {
+        padding: 20px 0;
     }
 }

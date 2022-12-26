@@ -24,7 +24,7 @@ const Chest: Skill = new Skill(
     chestReady,
     chestCooldown,
     240,
-    5,
+    1,
     clickAction,
     { 
         name: 'Random chest', 

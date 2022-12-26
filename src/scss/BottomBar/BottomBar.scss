@@ -13,7 +13,7 @@ section.bottom-bar {
 
     span.toggle-bottom-bar,
     section.display-toggle span {
-        @include Rectangle(40px);
+        @include Rectangle(clamp(30px, 10vw, 40px));
         background: #303030;
         border-radius: .2em;
         @include Flex(c, c);

@@ -16,6 +16,7 @@
     font-size: 22px;
 }
 
+
 body {
     font-family: 'Inter', sans-serif;
     background-image: url('../images/background.jpg');
@@ -46,9 +47,10 @@ body {
         top: 0;
         right: 0;
         font-size: 1rem;
-        background: #303030;
+        background: #252525;
         padding: 1em;
         border-radius: .15em;
+        z-index: 10;
         @include Flex(sb, c);
 
         p {
@@ -68,12 +70,36 @@ body {
                 color: $clr-white;
                 font-family: 'Comfortaa', cursive;                
                 font-weight: 700;
-                font-size: .9rem;
+                @include Clamp(.75, 4, .9);
 
                 span {
                     color: $clr-orange;
+                    font-size: inherit;
                 }
             }
         }
+
+        @media (max-width: 480px) {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        main.main-container-wrap {
+            section.right-section,
+            section.left-section {
+                width: 100vw;
+                height: 100vh;
+                padding: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    div.App,
+    div#root {
+        overflow-x: hidden;
+        width: 100vw;
     }
 }
