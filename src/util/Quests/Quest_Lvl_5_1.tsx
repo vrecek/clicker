@@ -28,7 +28,7 @@ const Quest_Lvl_5_1: Quest = new Quest<number>(
     {min: 2000, max: 5000},
     5,
     'Fighting master',
-    'Desc quest 5 1',
+    'Fight your way through enemies',
     'Click 1000 times',
     tracerFunc,
     1000

@@ -1,9 +1,9 @@
 import React from 'react'
-import { DisplayFunc, DisplayOption, ToggleOptions } from '../../interfaces/BottomInterfaces'
+import { DisplayOption, ToggleOptions } from '../../interfaces/BottomInterfaces'
 import Icon from '../Common/Icon'
 import {BiTime} from 'react-icons/bi'
 import {FaScroll} from 'react-icons/fa'
-import {AiOutlineInfoCircle} from 'react-icons/ai'
+import {AiFillSave, AiOutlineInfoCircle} from 'react-icons/ai'
 
 const DisplayToggle = ({changeFunc, containerRef}: ToggleOptions) => {
     return (
@@ -19,6 +19,10 @@ const DisplayToggle = ({changeFunc, containerRef}: ToggleOptions) => {
 
             <Icon action={(e) => changeFunc(e.currentTarget! as HTMLElement, DisplayOption.INFORMATIONS)}>
                 <AiOutlineInfoCircle />
+            </Icon>
+
+            <Icon action={(e) => changeFunc(e.currentTarget! as HTMLElement, DisplayOption.PROGRESS)}>
+                <AiFillSave />
             </Icon>
 
         </section>

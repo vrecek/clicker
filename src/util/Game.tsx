@@ -3,11 +3,9 @@ import { StateUpdate } from "../interfaces/CommonInterfaces"
 import Player from "./Player"
 import Quest from "./Quest"
 import Skill from "./Skill"
+import { GameObjectData, MainInterval, Totals } from "./Types/GameTypes"
 import Upgrade from "./Upgrade"
 
-
-type MainInterval = () => void
-type Totals = 'totalClicks' | 'totalUpgrades' | 'totalSkillsUsed' | 'totalSecondsPlayed'
 
 
 export default class Game {
@@ -30,21 +28,49 @@ export default class Game {
     private update: StateUpdate
 
 
-    public constructor(upgrades: Upgrade[], skills: Skill[], quests: Quest[], player?: Player, updater?: StateUpdate) {
-        this.totalSecondsPlayed = 0
 
-        this.totalClicks = 0
-        this.totalUpgrades = 0
-        this.totalSkillsUsed = 0
+    public constructor(upgrades: Upgrade[], skills: Skill[], quests: Quest[], player?: Player, updater?: StateUpdate) {
+        const gameObject: GameObjectData | null = JSON.parse(window.localStorage.getItem('gameObject') ?? 'null')
+
+        // Load progress if game was saved
+        // Else default values
+        if(gameObject) {
+            const {totalSecondsPlayed, totalClicks, totalSkillsUsed, totalUpgrades, visibleQuests, activeQuest} = gameObject
+            const savedUpgrades: Upgrade[] = gameObject.upgrades
+
+            this.totalSecondsPlayed = totalSecondsPlayed
+
+            this.totalClicks = totalClicks
+            this.totalUpgrades = totalUpgrades
+            this.totalSkillsUsed = totalSkillsUsed
+
+
+            this.visibleQuests = Quest.deserializeQuests(visibleQuests, quests)
+
+            this.activeQuest = activeQuest
+                ? Quest.deserializeQuests([activeQuest], quests)?.[0]
+                : null
+
+
+            this.upgrades = Upgrade.deserializeUpgrades(savedUpgrades, upgrades) 
+
+        }else {
+            this.totalSecondsPlayed = 0
+
+            this.totalClicks = 0
+            this.totalUpgrades = 0
+            this.totalSkillsUsed = 0
+
+            this.upgrades = upgrades
+
+            this.visibleQuests = []
+            this.activeQuest = null 
+        }
 
         this.animateState = true
 
-        this.upgrades = upgrades
         this.skills = skills
         this.quests = quests
-
-        this.visibleQuests = []
-        this.activeQuest = null
 
         this.player = player!
 
@@ -107,10 +133,10 @@ export default class Game {
     }
 
     // Initialize loading when opening a page
-    public entryLoading(): void {
+    public entryLoading(text?: string): void {
         const s = document.createElement('section')
 
-        s.textContent = 'LOADING'
+        s.textContent = text ?? 'LOADING'
 
         Object.assign(s.style, {
             position: 'fixed',
@@ -274,13 +300,6 @@ export default class Game {
         this.activeQuest.getTrackerFunction(this.player, this, this.activeQuest)
     }
 
-
-
-    // Removes quest from visibleQuests
-    public get getVisibleQuests(): Quest[] {
-        return this.visibleQuests
-    }
-
     // Get total field
     public getTotals(field: Totals): number {
         return this[field]
@@ -291,5 +310,42 @@ export default class Game {
         replace
             ? this[field] = value
             : this[field] += value
+    }
+
+    // Deletes whole progress
+    public deleteProgress(): void {
+        this.entryLoading('DELETING')
+
+        window.localStorage.removeItem('gameObject')
+        window.localStorage.removeItem('playerObject')
+
+        window.location.reload()
+    }
+
+    // Saves progress
+    public saveProgress(): void {
+        this.entryLoading('SAVING')
+
+        const gameObject: GameObjectData = {
+            totalSecondsPlayed: this.totalSecondsPlayed,
+
+            totalClicks: this.totalClicks,
+            totalUpgrades: this.totalUpgrades,
+            totalSkillsUsed: this.totalSkillsUsed,
+
+            upgrades: this.upgrades,
+
+            visibleQuests: this.visibleQuests,
+            activeQuest: this.activeQuest
+        }
+
+        window.localStorage.setItem('gameObject', JSON.stringify(gameObject))
+        window.localStorage.setItem('playerObject', JSON.stringify(this.player))
+    }
+
+
+    // Get visible quests
+    public get getVisibleQuests(): Quest[] {
+        return this.visibleQuests
     }
 }

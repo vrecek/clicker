@@ -6,6 +6,7 @@ import Quests from './Display/Quests/Quests'
 import DisplayToggle from './DisplayToggle'
 import MenuToggle from './MenuToggle'
 import Informations from './Display/Informations/Informations'
+import Progress from './Display/Progress/Progress'
 
 const BottomBar = ({tick}: {tick: boolean}) => {
     const containerRef = React.useRef<HTMLDivElement>(null)
@@ -38,6 +39,10 @@ const BottomBar = ({tick}: {tick: boolean}) => {
 
             case DisplayOption.INFORMATIONS:
                 setDisplay(<Informations />)
+            return
+
+            case DisplayOption.PROGRESS:
+                setDisplay(<Progress />)
             return
 
             default: return

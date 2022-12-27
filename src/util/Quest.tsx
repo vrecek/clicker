@@ -36,11 +36,14 @@ export default class Quest<T = any> {
         target: string, 
         trackerFunc: TrackerFunction,
         trackerMaxValue: number,
+        rewardValues?: RewardValues | null,
+        buffer?: T,
+        trackerProgressValue?: number
     ) {
         this.expRange = expRange
         this.goldRange = goldRange
 
-        this.rewardValues = null
+        this.rewardValues = rewardValues ?? null
 
         this.levelRequired = levelRequired
 
@@ -50,9 +53,9 @@ export default class Quest<T = any> {
 
         this.trackerFunc = trackerFunc
         this.trackerMaxValue = trackerMaxValue
-        this.trackerProgressValue = 0
+        this.trackerProgressValue = trackerProgressValue ?? 0
 
-        this.buffer = null
+        this.buffer = buffer ?? null
     }
 
 
@@ -81,6 +84,28 @@ export default class Quest<T = any> {
         this.buffer = null
     }
 
+
+    public static deserializeQuests(savedData: Quest[], newData: Quest[]): Quest[] {
+        if(!newData.length) return []
+
+        return savedData.map(x => {
+            const index: number = newData.findIndex(y => y.name === x.name)
+
+            return new Quest(
+                x.expRange,
+                x.goldRange,
+                x.levelRequired,
+                x.name,
+                x.desc,
+                x.target,
+                newData[index].trackerFunc,
+                x.trackerMaxValue,
+                x.rewardValues ?? null,
+                x.buffer,
+                x.trackerProgressValue
+            )
+        })
+    }
 
 
     // Returns true if quest should be added

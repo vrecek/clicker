@@ -1,5 +1,6 @@
 import { StateUpdate } from "../interfaces/CommonInterfaces"
 import Game from "./Game"
+import { keys, PlayerObjectData } from "./Types/GameTypes"
 import { InfoField, UpdateField } from "./Types/PlayerTypes"
 
 
@@ -28,26 +29,56 @@ export default class Player {
 
 
     public constructor(updater?: StateUpdate) {
-        this.totalGold = 0
-        this.gold = 0
+        const playerObject: PlayerObjectData | null = JSON.parse(window.localStorage.getItem('playerObject') ?? 'null')
 
-        this.clickPower = 1
+        // Load progress if game was saved
+        // Else default values
+        if(playerObject) {
+            const {totalGold, gold, clickPower, critChance, critPower, dps, originalDps, level, exp, expRequired, dpsMultiplier, expMultiplier, skillCooldown} = playerObject
 
-        this.critChance = 0
-        this.critPower = 2
+            this.totalGold = totalGold
+            this.gold = gold
+    
+            this.clickPower = clickPower
+    
+            this.critChance = critChance
+            this.critPower = critPower
+    
+            this.dps = dps
+            this.originalDps = originalDps
+            
+            this.level = level
+            
+            this.exp = exp
+            this.expRequired = expRequired
+    
+            this.dpsMultiplier = dpsMultiplier
+            this.expMultiplier = expMultiplier
+    
+            this.skillCooldown = skillCooldown
 
-        this.dps = 0
-        this.originalDps = 0
-        
-        this.level = 1
-        
-        this.exp = 0
-        this.expRequired = 1250
-
-        this.dpsMultiplier = 1
-        this.expMultiplier = 1
-
-        this.skillCooldown = 0
+        }else {
+            this.totalGold = 0
+            this.gold = 0
+    
+            this.clickPower = 1
+    
+            this.critChance = 0
+            this.critPower = 2
+    
+            this.dps = 0
+            this.originalDps = 0
+            
+            this.level = 1
+            
+            this.exp = 0
+            this.expRequired = 1250
+    
+            this.dpsMultiplier = 1
+            this.expMultiplier = 1
+    
+            this.skillCooldown = 0
+        }
         
         this.update = updater!
     }

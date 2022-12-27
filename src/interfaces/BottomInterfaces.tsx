@@ -1,7 +1,8 @@
 export enum DisplayOption {
     SKILLS = '0',
     QUESTS = '1',
-    INFORMATIONS = '2'
+    INFORMATIONS = '2',
+    PROGRESS = '3'
 }
 
 export type DisplayFunc = {

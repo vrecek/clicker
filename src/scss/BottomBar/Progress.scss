@@ -1,0 +1,74 @@
+@import '../config';
+
+section.display.progress {
+    padding: 2em;
+
+    p {
+        &.header {
+            font-weight: 800;
+            margin-bottom: 1.5em;
+            font-size: 1.1rem;
+        }
+
+        &.text,
+        &.red { @include Clamp(.8, 5, .9); }
+
+        &.text {
+            color: $clr-grey;
+        }
+
+        &.red {
+            color: red;
+            margin-bottom: 2em;
+        }
+    }
+
+    div {
+        @include Flex(none, c);
+
+        &:first-of-type {
+            margin-bottom: 2em;
+        }
+
+        span {
+            margin-right: 1em;
+            @include Rectangle(clamp(30px, 12vw, 50px));
+
+            svg {
+                @include FullSize;
+            }
+        }
+
+        button {
+            border-radius: .25em;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+    
+            label {
+                color: $clr-white;
+                font-weight: 500;
+                @include Clamp(.8, 5, 1);
+                padding: 1em 2em;
+                display: block;
+            }
+    
+            &.save {
+                background: $clr-blued;
+            }
+    
+            &.delete {
+                background: $clr-red;
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        padding: 2em 1em;
+        @include Flex(c, c, c);
+
+        p {
+            text-align: center;
+        }
+    }
+}

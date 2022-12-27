@@ -39,7 +39,8 @@ export default class Upgrade<T = any> {
         costIncrementFunc: CostIncrement,
         initialWhatNum?: T,
         buffer?: T,
-        refreshFunc?: RefreshFunc
+        refreshFunc?: RefreshFunc,
+        owned?: number
     ) {
         this.buffer = buffer ?? null
 
@@ -52,7 +53,7 @@ export default class Upgrade<T = any> {
         this.whatDescNum = initialWhatNum ?? null
 
         this.maximum = maximum
-        this.owned = 0
+        this.owned = owned ?? 0
         
         this.cost = initialCost
 
@@ -85,6 +86,30 @@ export default class Upgrade<T = any> {
                  
         
         return whatText
+    }
+
+
+    public static deserializeUpgrades(savedData: Upgrade[], newData: Upgrade[]): Upgrade[] {
+        if (!newData.length) return []
+        
+        return savedData.map(x => {
+            const index: number = newData.findIndex(y => y.name === x.name)
+            
+            return new Upgrade(
+                x.image,
+                x.name,
+                x.desc,
+                x.whatDesc,
+                x.maximum,
+                x.cost,
+                newData[index].buyFunc,
+                newData[index].costIncrementFunc,
+                x.whatDescNum,
+                x.buffer,
+                newData[index].refreshFunc ?? undefined,
+                x.owned
+            )
+        })
     }
 
 

@@ -122,5 +122,9 @@ section.display.skills {
 
     @media (max-width: 768px) {
         padding: 20px 0;
+
+        article {
+            display: none;
+        }
     }
 }
